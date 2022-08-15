@@ -2,13 +2,13 @@ import { Schema, model } from 'mongoose'
 import { User } from '../types'
 import bcrypt from 'bcryptjs'
 
-const userSchema = new Schema<User>({
+const UserSchema = new Schema<User>({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 })
 
-userSchema.pre('save', function (next) {
+UserSchema.pre('save', function (next) {
   const user = this
 
   if (this.isModified('password') || this.isNew) {
@@ -30,6 +30,10 @@ userSchema.pre('save', function (next) {
   }
 })
 
-const UserModel = model<User>('UserModel', userSchema)
+UserSchema.methods.comparePassword = async function(password: string): Promise<Boolean> {
+  return await bcrypt.compare(password, this.password)
+}
+
+const UserModel = model<User>('UserModel', UserSchema)
 
 export default UserModel
