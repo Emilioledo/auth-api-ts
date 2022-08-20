@@ -9,7 +9,7 @@ async function connectdb() {
     },
     () => {
       return console.log('Database connected')
-    },
+    }
   )
 }
 
