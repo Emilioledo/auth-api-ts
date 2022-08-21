@@ -3,7 +3,7 @@ import database from './database'
 import authRoutes from './routes/auth-routes'
 import dotenv from 'dotenv'
 
-const main = () => {
+const main = async () => {
   const app = express()
   dotenv.config()
   database.connectdb()
@@ -18,4 +18,6 @@ const main = () => {
   })
 }
 
-main()
+main().catch((error) => {
+  console.error('Server failed to start', error)
+})
